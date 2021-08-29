@@ -1,0 +1,25 @@
+name: ci
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "10 10 */2 * *"
+jobs:
+  gen:
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout
+        uses: actions/checkout@v2
+
+      # Ensure master* is up-to-date
+      - name: delete master folders
+        run: rm -rf master*
+
+      - name: generate
+        run: make gen
+
+      - uses: stefanzweifel/git-auto-commit-action@v4
+        with:
+          commit_message: Adding new schemas
+          commit_user_name: Steven Wade
+          commit_user_email: steven@stevenwade.co.uk
+          commit_author: Steven Wade <steven@stevenwade.co.uk>
